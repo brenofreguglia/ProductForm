@@ -1,0 +1,23 @@
+{
+  "name": "productform",
+  "version": "1.0.0",
+  "description": "PI - Formulário de produtos (AT2)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brenofreguglia/ProductForm.git"
+  },
+  "author": "Breno Freguglia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brenofreguglia/ProductForm/issues"
+  },
+  "homepage": "https://github.com/brenofreguglia/ProductForm#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
