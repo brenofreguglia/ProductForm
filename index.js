@@ -8,7 +8,6 @@ let listaProdutos = [];
 
 app.use(express.urlencoded({ extended: true }));
 
-// Página de cadastro de produtos
 app.get("/", (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -96,9 +95,12 @@ app.get("/", (req, res) => {
   `);
 });
 
-// Adiciona o produto e redireciona para a lista
 app.post("/adicionarProduto", (req, res) => {
-  const { nome, categoria, preco, quantidade, descricao } = req.body;
+  const nome = req.body.nome;
+  const categoria = req.body.categoria;
+  const preco = req.body.preco;
+  const quantidade = req.body.quantidade;
+  const descricao = req.body.descricao;
 
   listaProdutos.push({
     nome,
@@ -111,7 +113,6 @@ app.post("/adicionarProduto", (req, res) => {
   res.redirect("/listaProdutos");
 });
 
-// Página da lista de produtos
 app.get("/listaProdutos", (req, res) => {
   let tabela = `
     <!DOCTYPE html>
@@ -124,68 +125,62 @@ app.get("/listaProdutos", (req, res) => {
 
       <style>
         body {
-            background-color: #f0f4ff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 3rem 1rem;
-            font-family: "Inter", system-ui, sans-serif;
+          background-color: #f3f6ff;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          padding: 3rem 1rem;
+          color: #2b2b2b;
         }
 
         .table-container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            width: 100%;
-            max-width: 900px;
-            transition: transform 0.2s ease;
+          background: #fff;
+          padding: 2.5rem;
+          border-radius: 1rem;
+          box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+          width: 100%;
+          max-width: 1000px;
         }
 
         h1 {
-            font-weight: 600;
-            margin-bottom: 2rem;
+          font-weight: 700;
+          font-size: 1.8rem;
+          margin-bottom: 2rem;
+          text-align: center;
         }
 
         table {
-            border-radius: 0.3rem;
-            overflow: hidden;
-        }
-
-        thead {
-            background: #0d6efd;
-            color: white;
+          border-radius: 0.5rem;
+          overflow: hidden;
+          background-color: #fff;
         }
 
         th {
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.03em;
-        }z
-
-        .empty-row {
-            color: #6c757d;
-            font-style: italic;
+          text-transform: uppercase;
+          font-size: 0.9rem;
+          letter-spacing: 0.04em;
+          padding: 1rem;
         }
 
-        .btn-custom {
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            padding: 0.6rem 1.6rem;
-            transition: background-color 0.2s;
+        td {
+          vertical-align: middle;
+          padding: 0.9rem;
+        }
+
+        .empty-row {
+          color: #6c757d;
+          background-color: #f8f9fa;
         }
       </style>
     </head>
 
     <body>
       <div class="table-container">
-        <h1 class="text-center">Lista de Produtos</h1>
+        <h1>Lista de Produtos</h1>
 
         <div class="table-responsive">
-          <table class="table table-striped align-middle mb-0">
+          <table class="table table-bordered align-middle mb-0 text-center">
             <thead>
               <tr>
                 <th>Nome</th>
@@ -201,18 +196,20 @@ app.get("/listaProdutos", (req, res) => {
   if (listaProdutos.length === 0) {
     tabela += `
       <tr>
-        <td colspan="5" class="text-center empty-row py-4">Nenhum produto cadastrado ainda.</td>
+        <td colspan="5" class="text-center empty-row py-4">
+          Nenhum produto cadastrado ainda.
+        </td>
       </tr>
     `;
   } else {
-    for (let produto of listaProdutos) {
+    for (let i = 0; i < listaProdutos.length; i++) {
       tabela += `
         <tr>
-          <td>${produto.nome}</td>
-          <td>${produto.categoria}</td>
-          <td>${Number(produto.preco).toFixed(2)}</td>
-          <td>${produto.quantidade}</td>
-          <td>${produto.descricao || "-"}</td>
+          <td>${listaProdutos[i].nome}</td>
+          <td>${listaProdutos[i].categoria}</td>
+          <td>R$ ${Number(listaProdutos[i].preco).toFixed(2)}</td>
+          <td>${listaProdutos[i].quantidade}</td>
+          <td>${listaProdutos[i].descricao || "-"}</td>
         </tr>
       `;
     }
@@ -224,7 +221,7 @@ app.get("/listaProdutos", (req, res) => {
         </div>
 
         <div class="text-center mt-4">
-          <a href="/" class="btn btn-custom">Voltar ao Cadastro</a>
+          <a href="/" class="btn btn-primary">Voltar ao Cadastro</a>
         </div>
       </div>
     </body>
